@@ -17,12 +17,34 @@ interface NoticeCardProps {
   index?: number;
 }
 
-const categoryConfig: Record<string, { bg: string; text: string; label: string; icon: string; glow: string; accent: string }> = {
+function CategoryIcon({ category, className }: { category: string; className?: string }) {
+  switch (category) {
+    case 'EXAM':
+      return (
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      );
+    case 'EVENT':
+      return (
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+        </svg>
+      );
+  }
+}
+
+const categoryConfig: Record<string, { bg: string; text: string; label: string; glow: string; accent: string }> = {
   EXAM: {
     bg: 'bg-purple-500/15',
     text: 'text-purple-300',
     label: 'Exam',
-    icon: '📝',
     glow: 'card-glow-purple',
     accent: 'from-purple-500/20 to-transparent',
   },
@@ -30,7 +52,6 @@ const categoryConfig: Record<string, { bg: string; text: string; label: string; 
     bg: 'bg-cyan-500/15',
     text: 'text-cyan-300',
     label: 'Event',
-    icon: '🎉',
     glow: 'card-glow-cyan',
     accent: 'from-cyan-500/20 to-transparent',
   },
@@ -38,7 +59,6 @@ const categoryConfig: Record<string, { bg: string; text: string; label: string; 
     bg: 'bg-emerald-500/15',
     text: 'text-emerald-300',
     label: 'General',
-    icon: '📌',
     glow: 'card-glow-emerald',
     accent: 'from-emerald-500/20 to-transparent',
   },
@@ -78,7 +98,7 @@ export default function NoticeCard({ notice, onDelete, index = 0 }: NoticeCardPr
             </span>
           )}
           <span className={`${cat.bg} ${cat.text} text-xs font-medium px-3 py-1 rounded-full inline-flex items-center gap-1.5`}>
-            <span>{cat.icon}</span>
+            <CategoryIcon category={notice.category} className="w-3.5 h-3.5" />
             {cat.label}
           </span>
         </div>

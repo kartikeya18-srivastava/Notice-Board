@@ -61,12 +61,25 @@ export default function Home() {
 
   const urgentCount = notices.filter((n) => n.priority === 'URGENT').length;
 
-  const filterButtons: { value: FilterCategory; label: string; icon: string }[] = [
-    { value: 'ALL', label: 'All', icon: '🗂️' },
-    { value: 'EXAM', label: 'Exams', icon: '📝' },
-    { value: 'EVENT', label: 'Events', icon: '🎉' },
-    { value: 'GENERAL', label: 'General', icon: '📌' },
+  const filterButtons: { value: FilterCategory; label: string }[] = [
+    { value: 'ALL', label: 'All' },
+    { value: 'EXAM', label: 'Exams' },
+    { value: 'EVENT', label: 'Events' },
+    { value: 'GENERAL', label: 'General' },
   ];
+
+  function FilterIcon({ value, className }: { value: string; className?: string }) {
+    switch (value) {
+      case 'EXAM':
+        return <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>;
+      case 'EVENT':
+        return <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>;
+      case 'GENERAL':
+        return <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>;
+      default:
+        return <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>;
+    }
+  }
 
   return (
     <>
@@ -149,7 +162,7 @@ export default function Home() {
                       : 'glass-light text-surface-400 hover:text-surface-200 hover:bg-surface-800/50'
                   }`}
                 >
-                  <span>{btn.icon}</span>
+                  <FilterIcon value={btn.value} className="w-4 h-4" />
                   {btn.label}
                   {btn.value === 'ALL' && (
                     <span className="ml-1 text-xs opacity-70">({notices.length})</span>
