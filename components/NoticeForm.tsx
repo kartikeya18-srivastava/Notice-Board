@@ -57,10 +57,7 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
     setLoading(true);
 
     try {
-      const url = isEditing
-        ? `/api/notices/${initialValues!.id}`
-        : '/api/notices';
-
+      const url = isEditing ? `/api/notices/${initialValues!.id}` : '/api/notices';
       const method = isEditing ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -91,18 +88,27 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
     }
   };
 
+  const inputClasses =
+    'w-full px-4 py-3 rounded-xl glass-input text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500/40 transition-all duration-300 hover:border-surface-600/50';
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Error message */}
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl text-sm animate-slide-up">
+        <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 text-red-300 px-4 py-3 rounded-xl text-sm animate-slide-down">
+          <svg className="w-5 h-5 shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
           {error}
         </div>
       )}
 
       {/* Title */}
-      <div>
-        <label htmlFor="title" className="block text-sm font-medium text-surface-300 mb-2">
+      <div className="space-y-2">
+        <label htmlFor="title" className="block text-sm font-medium text-surface-300 flex items-center gap-2">
+          <svg className="w-4 h-4 text-surface-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+          </svg>
           Title <span className="text-red-400">*</span>
         </label>
         <input
@@ -112,14 +118,17 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
           value={form.title}
           onChange={handleChange}
           required
-          placeholder="Enter notice title"
-          className="w-full px-4 py-3 rounded-xl bg-surface-800/50 border border-surface-700/50 text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
+          placeholder="Enter a clear, descriptive title"
+          className={inputClasses}
         />
       </div>
 
       {/* Body */}
-      <div>
-        <label htmlFor="body" className="block text-sm font-medium text-surface-300 mb-2">
+      <div className="space-y-2">
+        <label htmlFor="body" className="block text-sm font-medium text-surface-300 flex items-center gap-2">
+          <svg className="w-4 h-4 text-surface-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+          </svg>
           Description <span className="text-red-400">*</span>
         </label>
         <textarea
@@ -129,15 +138,16 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
           onChange={handleChange}
           required
           rows={5}
-          placeholder="Enter notice description"
-          className="w-full px-4 py-3 rounded-xl bg-surface-800/50 border border-surface-700/50 text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all resize-none"
+          placeholder="Write a detailed description of the notice..."
+          className={`${inputClasses} resize-none`}
         />
       </div>
 
       {/* Category + Priority row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="category" className="block text-sm font-medium text-surface-300 mb-2">
+        <div className="space-y-2">
+          <label htmlFor="category" className="block text-sm font-medium text-surface-300 flex items-center gap-2">
+            <span>📂</span>
             Category <span className="text-red-400">*</span>
           </label>
           <select
@@ -145,16 +155,17 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
             name="category"
             value={form.category}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl bg-surface-800/50 border border-surface-700/50 text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all cursor-pointer"
+            className={`${inputClasses} cursor-pointer`}
           >
-            <option value="GENERAL">General</option>
-            <option value="EXAM">Exam</option>
-            <option value="EVENT">Event</option>
+            <option value="GENERAL">📌 General</option>
+            <option value="EXAM">📝 Exam</option>
+            <option value="EVENT">🎉 Event</option>
           </select>
         </div>
 
-        <div>
-          <label htmlFor="priority" className="block text-sm font-medium text-surface-300 mb-2">
+        <div className="space-y-2">
+          <label htmlFor="priority" className="block text-sm font-medium text-surface-300 flex items-center gap-2">
+            <span>⚡</span>
             Priority <span className="text-red-400">*</span>
           </label>
           <select
@@ -162,17 +173,20 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
             name="priority"
             value={form.priority}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl bg-surface-800/50 border border-surface-700/50 text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all cursor-pointer"
+            className={`${inputClasses} cursor-pointer`}
           >
-            <option value="NORMAL">Normal</option>
-            <option value="URGENT">Urgent</option>
+            <option value="NORMAL">🟢 Normal</option>
+            <option value="URGENT">🔴 Urgent</option>
           </select>
         </div>
       </div>
 
       {/* Publish Date */}
-      <div>
-        <label htmlFor="publishDate" className="block text-sm font-medium text-surface-300 mb-2">
+      <div className="space-y-2">
+        <label htmlFor="publishDate" className="block text-sm font-medium text-surface-300 flex items-center gap-2">
+          <svg className="w-4 h-4 text-surface-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
           Publish Date <span className="text-red-400">*</span>
         </label>
         <input
@@ -182,14 +196,17 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
           value={form.publishDate}
           onChange={handleChange}
           required
-          className="w-full px-4 py-3 rounded-xl bg-surface-800/50 border border-surface-700/50 text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
+          className={inputClasses}
         />
       </div>
 
       {/* Image URL (optional) */}
-      <div>
-        <label htmlFor="imageUrl" className="block text-sm font-medium text-surface-300 mb-2">
-          Image URL <span className="text-surface-500">(optional)</span>
+      <div className="space-y-2">
+        <label htmlFor="imageUrl" className="block text-sm font-medium text-surface-300 flex items-center gap-2">
+          <svg className="w-4 h-4 text-surface-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Image URL <span className="text-surface-600 font-normal">(optional)</span>
         </label>
         <input
           type="url"
@@ -198,16 +215,16 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
           value={form.imageUrl}
           onChange={handleChange}
           placeholder="https://example.com/image.jpg"
-          className="w-full px-4 py-3 rounded-xl bg-surface-800/50 border border-surface-700/50 text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all"
+          className={inputClasses}
         />
       </div>
 
-      {/* Submit button */}
-      <div className="flex gap-3 pt-2">
+      {/* Submit buttons */}
+      <div className="flex gap-3 pt-4">
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 gradient-primary text-white font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-lg shadow-primary-500/25"
+          className="flex-1 btn-primary text-center disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -218,13 +235,29 @@ export default function NoticeForm({ initialValues }: NoticeFormProps) {
               {isEditing ? 'Updating...' : 'Creating...'}
             </span>
           ) : (
-            isEditing ? 'Update Notice' : 'Create Notice'
+            <span className="flex items-center justify-center gap-2">
+              {isEditing ? (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Update Notice
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  Create Notice
+                </>
+              )}
+            </span>
           )}
         </button>
         <button
           type="button"
           onClick={() => router.push('/')}
-          className="px-6 py-3 rounded-xl bg-surface-800/50 border border-surface-700/50 text-surface-300 hover:bg-surface-700/50 transition-all duration-200 cursor-pointer font-medium"
+          className="btn-ghost"
         >
           Cancel
         </button>
